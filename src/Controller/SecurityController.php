@@ -30,8 +30,8 @@ class SecurityController extends AbstractController
      * @Route("/logout", name="app_logout")
      * @return Response
      */
-    public function logout(): Response {
-        return new Response('logout');
+    public function logout() {
+        throw new \Exception('Will be intercepted before getting here');
     }
 
 }
