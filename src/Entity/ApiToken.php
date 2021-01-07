@@ -28,10 +28,17 @@ class ApiToken
     private $expiresAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="apiTokens")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="apiTokens", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
+
+    public function __construct(User $user)
+    {
+        $this->token = bin2hex(random_bytes(60));
+        $this->user = $user;
+        $this->expiresAt = new \DateTime('+2 hour');
+    }
 
     public function getId(): ?int
     {
@@ -43,34 +50,39 @@ class ApiToken
         return $this->token;
     }
 
-    public function setToken(string $token): self
-    {
-        $this->token = $token;
+    // public function setToken(string $token): self
+    // {
+    //     $this->token = $token;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getExpiresAt(): ?\DateTimeInterface
     {
         return $this->expiresAt;
     }
 
-    public function setExpiresAt(?\DateTimeInterface $expiresAt): self
-    {
-        $this->expiresAt = $expiresAt;
+    // public function setExpiresAt(?\DateTimeInterface $expiresAt): self
+    // {
+    //     $this->expiresAt = $expiresAt;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
+    // public function setUser(?User $user): self
+    // {
+    //     $this->user = $user;
 
-        return $this;
+    //     return $this;
+    // }
+
+    public function renewExpiresAt()
+    {
+        $this->expiresAt = new \DateTime('+1 hour');
     }
 }

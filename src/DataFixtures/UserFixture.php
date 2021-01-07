@@ -2,15 +2,17 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\ApiToken;
 use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+
 class UserFixture extends Fixture
 {
     private $passwordEncoder;
-    
+
     public function __construct(UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->passwordEncoder = $passwordEncoder;
@@ -20,8 +22,7 @@ class UserFixture extends Fixture
     {
         $faker = Factory::create();
 
-        for ($i=1; $i<10; $i++) 
-        {
+        for ($i = 1; $i <= 10; ++$i) {
             $user = new User();
             $user->setEmail($faker->email);
             $user->setPassword($this->passwordEncoder->encodePassword(
@@ -32,11 +33,16 @@ class UserFixture extends Fixture
 
             $user->setFirstName($faker->firstName);
             $user->setTwitterUsername($faker->userName);
-            $manager->persist($user);
+
+            $apiToken1 = new ApiToken($user);
+//            $apiToken2 = new ApiToken($user);
+            $manager->persist($apiToken1);
+//            $manager->persist($apiToken2);
+
+            // $manager->persist($user);
         }
 
-        for ($i=1; $i<=3; $i++) 
-        {
+        for ($i = 1; $i <= 3; ++$i) {
             $user = new User();
             $user->setEmail($faker->email);
             $user->setPassword($this->passwordEncoder->encodePassword(
@@ -50,6 +56,5 @@ class UserFixture extends Fixture
         }
 
         $manager->flush();
-
     }
 }
