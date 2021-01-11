@@ -2,12 +2,12 @@
 
 namespace App\Entity;
 
+use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use App\Repository\UserRepository;
-use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -44,7 +44,7 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      * @Groups("main")
      */
     private $TwitterUsername;
@@ -57,6 +57,11 @@ class User implements UserInterface
     public function __construct()
     {
         $this->apiTokens = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->id;
     }
 
     public function getId(): ?int
@@ -164,13 +169,15 @@ class User implements UserInterface
     public function getAvatarUrl(string $size = null): string
     {
         $url = 'https://robohash.org/'.$this->getEmail();
-        if ($size)
+        if ($size) {
             $url .= sprintf('?size=%dx%d', $size, $size);
+        }
+
         return $url;
     }
 
     /**
-     * @return Collection|ApiToken[]
+     * @return ApiToken[]|Collection
      */
     public function getApiTokens(): Collection
     {

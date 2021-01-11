@@ -32,7 +32,9 @@ class UserFixture extends Fixture
             // dd($user);
 
             $user->setFirstName($faker->firstName);
-            $user->setTwitterUsername($faker->userName);
+            if (true === (bool) rand(0, 1)) {
+                $user->setTwitterUsername($faker->userName);
+            }
 
             $apiToken1 = new ApiToken($user);
 //            $apiToken2 = new ApiToken($user);
@@ -50,7 +52,9 @@ class UserFixture extends Fixture
                 'pass'
             ));
             $user->setFirstName($faker->firstName);
-            $user->setTwitterUsername($faker->userName);
+            if (true === (bool) rand(0, 1)) {
+                $user->setTwitterUsername($faker->userName);
+            }
             $user->setRoles(['ROLE_ADMIN']);
             $manager->persist($user);
         }

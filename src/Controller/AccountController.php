@@ -3,10 +3,10 @@
 namespace App\Controller;
 
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @IsGranted("ROLE_USER")
@@ -29,7 +29,7 @@ class AccountController extends AbstractController
     public function accountApi()
     {
         $user = $this->getUser();
-        return $this->json($user, 200, [], ["groups" => ["main"]]);
-    }
 
+        return $this->json($user, 200, [], ['groups' => ['main']]);
+    }
 }
